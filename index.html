@@ -17,7 +17,7 @@
             <h2>Input</h2>
             
             <form action="">
-                <section id="input-grocery">
+                <section class="input grocery">
                     <label for="item-name">Name of grocery item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
 
                     <label for="food-group">Food group: <br></label>
@@ -40,9 +40,13 @@
                         <option value="unit">unit</option>
                     </select></label>
                     
+                    <div class="submit-item">
+                        <input class="button" type="submit" Value="Add to Pantry">
+                    </div>
+
                 </section>
 
-                <section id="input-recipe">
+                <section class="input recipe">
                     <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. apples"><br></label>
 
                     <label for="food-group">Food group: <br></label>
@@ -64,12 +68,28 @@
                         <option value="cups">cup</option>
                         <option value="unit">unit</option>
                     </select></label>
+
+                    <div class="add-recipe-item">
+                        <input class="button" type="submit" Value="Add ingredient">
+                    </div>
+
+                    <div class="submit-recipe">
+                        <input class="button" type="submit" Value="Submit Recipe">
+                    </div>
+
                 </section>
             </form>
         </section>
     
         <section class="main">
             <h2>Pantry</h2>
+
+            <div id="pantry-list">
+                <ul>
+                    <!-- Pantry list items will display here -->
+                </ul>
+
+            </div>
         </section>
     
         <section class="main">
