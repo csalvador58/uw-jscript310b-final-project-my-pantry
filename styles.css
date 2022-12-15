@@ -1,0 +1,49 @@
+:root {
+    --text-white: rgb(248, 233, 255);
+    --text-black-alt: rgb(28, 25, 29);
+    --background-black: black;
+    --background-blue: rgb(59, 59, 99);
+    --background-blue-dark: rgb(9, 9, 66);
+    --background-gold: rgba(255, 215, 0, 0.95);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+h2 {
+    text-align: center;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    margin: 5rem auto;
+}
+
+section {
+    height: 75vh;
+    width: 30rem;
+    box-sizing: border-box;
+    margin: auto;
+    border-style: solid;
+    border-radius: 25px;
+    
+}
+.main {
+    display: flex;
+}
