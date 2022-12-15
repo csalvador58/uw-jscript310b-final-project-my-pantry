@@ -16,34 +16,44 @@
     box-sizing: inherit;
 }
 
-h2 {
+h1 {
+    font-size: 5rem;
+}
+
+h2, header, footer {
     text-align: center;
+}
+
+header, footer {
+    margin: 5em 0;
 }
 
 html {
     box-sizing: border-box;
     font-size: 62.5%;
     scroll-behavior: smooth;
+    background-color: antiquewhite;
+    display: flex;
 }
 
 body {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
 }
 
-header {
-    margin: 5rem auto;
-}
-
-section {
-    height: 75vh;
-    width: 30rem;
+.main {
+    height: 80vh;
+    width: 100%;
+    padding: 1em;
     box-sizing: border-box;
-    margin: auto;
+    margin: auto 0.5rem;
     border-style: solid;
     border-radius: 25px;
-    
 }
-.main {
+
+.main-container {
     display: flex;
 }

@@ -12,23 +12,78 @@
         <h1>My Pantry</h1>
     </header>
     
-    <div class="main">
-        <section id="input">
+    <div class="main-container">
+        <section class="main">
             <h2>Input</h2>
+            
+            <form action="">
+                <section id="input-grocery">
+                    <label for="item-name">Name of grocery item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
+
+                    <label for="food-group">Food group: <br></label>
+                    <select id="food-group">
+                      <option value="">--Select Type </option>
+                      <option value="fruits">Fruits</option>
+                      <option value="vegetables">Vegetables</option>
+                      <option value="grains">Grains</option>
+                      <option value="protein">Protein</option>
+                      <option value="dairy">Dairy</option>
+                    </select>
+
+
+                    <label for="quantity"><br>Quantity: <br><input id="quantity" type="text" placeholder="Enter quantity">
+                    <select id="food-group">
+                        <option value="">--Select </option>
+                        <option value="grams">g</option>
+                        <option value="ounces">fl oz</option>
+                        <option value="cups">cup</option>
+                        <option value="unit">unit</option>
+                    </select></label>
+                    
+                </section>
+
+                <section id="input-recipe">
+                    <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. apples"><br></label>
+
+                    <label for="food-group">Food group: <br></label>
+                    <select id="food-group">
+                      <option value="">--Select Type </option>
+                      <option value="fruits">Fruits</option>
+                      <option value="vegetables">Vegetables</option>
+                      <option value="grains">Grains</option>
+                      <option value="protein">Protein</option>
+                      <option value="dairy">Dairy</option>
+                    </select>
+
+
+                    <label for="quantity"><br>Quantity: <br><input id="quantity" type="text" placeholder="Enter quantity">
+                    <select id="food-group">
+                        <option value="">--Select </option>
+                        <option value="grams">g</option>
+                        <option value="ounces">fl oz</option>
+                        <option value="cups">cup</option>
+                        <option value="unit">unit</option>
+                    </select></label>
+                </section>
+            </form>
         </section>
     
-        <section id="pantry">
+        <section class="main">
             <h2>Pantry</h2>
         </section>
     
-        <section id="recipes">
+        <section class="main">
             <h2>Recipes</h2>
         </section>
     
-        <section id="planning">
+        <section class="main">
             <h2>Meal Planning</h2>
         </section>
     </div>
+
+    <footer>
+        <h2>UW JSCRIPT 310B<br>Created by Chris Salvador</h2>
+    </footer>
 </body>
 </html>
 
