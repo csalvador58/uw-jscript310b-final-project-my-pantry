@@ -16,18 +16,19 @@
         <section class="main">
             <h2>Input</h2>
             
-            <form action="">
+            <form id="input-pantry" action="">
                 <section class="input grocery">
                     <label for="item-name">Name of grocery item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
 
                     <label for="food-group">Food group: <br></label>
                     <select id="food-group">
                       <option value="">--Select Type </option>
-                      <option value="fruits">Fruits</option>
-                      <option value="vegetables">Vegetables</option>
-                      <option value="grains">Grains</option>
+                      <option value="fruit">Fruit</option>
+                      <option value="vegetable">Vegetable</option>
+                      <option value="grain">Grain</option>
                       <option value="protein">Protein</option>
                       <option value="dairy">Dairy</option>
+                      <option value="misc">Misc</option>
                     </select>
 
 
@@ -43,31 +44,15 @@
                     <div class="submit-item">
                         <input class="button" type="submit" Value="Add to Pantry">
                     </div>
-
                 </section>
+                
+            </form>
+            <form id="input-recipe" action="">
 
                 <section class="input recipe">
-                    <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. apples"><br></label>
+                    <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. Spaghetti"><br></label>
 
-                    <label for="food-group">Food group: <br></label>
-                    <select id="food-group">
-                      <option value="">--Select Type </option>
-                      <option value="fruits">Fruits</option>
-                      <option value="vegetables">Vegetables</option>
-                      <option value="grains">Grains</option>
-                      <option value="protein">Protein</option>
-                      <option value="dairy">Dairy</option>
-                    </select>
-
-
-                    <label for="quantity"><br>Quantity: <br><input id="quantity" type="text" placeholder="Enter quantity">
-                    <select id="food-group">
-                        <option value="">--Select </option>
-                        <option value="grams">g</option>
-                        <option value="ounces">fl oz</option>
-                        <option value="cups">cup</option>
-                        <option value="unit">unit</option>
-                    </select></label>
+                    
 
                     <div class="add-recipe-item">
                         <input class="button" type="submit" Value="Add ingredient">
@@ -85,6 +70,8 @@
             <h2>Pantry</h2>
 
             <div id="pantry-list">
+                
+
                 <ul>
                     <!-- Pantry list items will display here -->
                 </ul>
@@ -102,7 +89,7 @@
     </div>
 
     <footer>
-        <h2>UW JSCRIPT 310B<br>Created by Chris Salvador</h2>
+        <p>UW JSCRIPT 310B<br>Created by Chris Salvador</p>
     </footer>
 </body>
 </html>
