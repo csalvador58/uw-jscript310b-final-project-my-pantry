@@ -18,27 +18,15 @@
             
             <form id="input-pantry" action="">
                 <section class="input grocery">
-                    <label for="item-name">Name of grocery item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
-
-                    <label for="food-group">Food group: <br></label>
-                    <select id="food-group">
-                      <option value="">--Select Type </option>
-                      <option value="fruit">Fruit</option>
-                      <option value="vegetable">Vegetable</option>
-                      <option value="grain">Grain</option>
-                      <option value="protein">Protein</option>
-                      <option value="dairy">Dairy</option>
-                      <option value="misc">Misc</option>
-                    </select>
-
+                    <label for="item-name">Name of item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
 
                     <label for="quantity"><br>Quantity: <br><input id="quantity" type="text" placeholder="Enter quantity">
-                    <select id="food-group">
-                        <option value="">--Select </option>
-                        <option value="grams">g</option>
-                        <option value="ounces">fl oz</option>
-                        <option value="cups">cup</option>
-                        <option value="unit">unit</option>
+                    <select id="unit-of-measure">
+                        <option value="">--Select Unit of Measure </option>
+                        <option value="g">g</option>
+                        <option value="oz">fl oz</option>
+                        <option value="cup(s)">cup</option>
+                        <option value="unit(s)">unit</option>
                     </select></label>
                     
                     <div class="submit-item">
@@ -68,15 +56,10 @@
     
         <section class="main">
             <h2>Pantry</h2>
+            <ul id="pantry-list">
+                <!-- Pantry list items will display here -->
+            </ul>
 
-            <div id="pantry-list">
-                
-
-                <ul>
-                    <!-- Pantry list items will display here -->
-                </ul>
-
-            </div>
         </section>
     
         <section class="main">
