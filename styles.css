@@ -55,8 +55,8 @@ ul {
     list-style-type: none;
 }
 
-.input{
-    margin: 5em 0;
+.input, .pantry, .recipe {
+    margin: 3em 0;
 }
 
 .main {

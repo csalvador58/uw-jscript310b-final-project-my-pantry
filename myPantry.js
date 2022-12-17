@@ -54,7 +54,7 @@
     const applePie = new Recipe('Apple pie');
     const pecanPie = new Recipe('Pecan pie');
 
-// ***************TEST CODE
+    // ***************TEST CODE
 
 
     // **************EVENT LISTENERS*************
@@ -111,7 +111,7 @@
 
         for (let ingredient of pantry) {
             let newListItem = document.createElement('li');
-            newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="delete">Delete</a>\n`;
+            newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="delete">Delete</a>\n<a class="add-to-recipe">Add to recipe</a>\n`;
             pantryList.appendChild(newListItem);
         }
     }

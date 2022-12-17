@@ -18,7 +18,7 @@
             
             <form id="input-pantry" action="">
                 <section class="input grocery">
-                    <label for="item-name">Name of item: <br><input id="item-name" type="text" placeholder="i.e. apples"><br></label>
+                    <label for="item-name">Name of item: <br><input id="item-name" type="text" placeholder="i.e. apple"><br></label>
 
                     <label for="quantity"><br>Quantity: <br><input id="quantity" type="text" placeholder="Enter quantity">
                     <select id="unit-of-measure">
@@ -38,13 +38,28 @@
             <form id="input-recipe" action="">
 
                 <section class="input recipe">
-                    <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. Spaghetti"><br></label>
+                    <label for="recipe-name">Name of Recipe: <br><input id="recipe-name" type="text" placeholder="i.e. Spaghetti"><br><br></label>
 
                     
+                    <label for="recipe-item">Name of Ingredient: <br><input id="recipe-item" type="text" placeholder="i.e. pasta"><br></label>
+
+                    <label for="recipe-item-qty"><br>Quantity: <br><input id="recipe-item-qty" type="text" placeholder="Enter quantity">
+                        <select id="unit-of-measure">
+                            <option value="">--Select Unit of Measure </option>
+                            <option value="g">g</option>
+                            <option value="oz">fl oz</option>
+                            <option value="cup(s)">cup</option>
+                            <option value="unit(s)">unit</option>
+                        </select></label>
 
                     <div class="add-recipe-item">
                         <input class="button" type="submit" Value="Add ingredient">
                     </div>
+
+                    <h3>Ingredients: </h3>
+                    <ul id="ingredients-list">
+                        <!-- Pantry list items will display here -->
+                    </ul>
 
                     <div class="submit-recipe">
                         <input class="button" type="submit" Value="Submit Recipe">
@@ -56,6 +71,11 @@
     
         <section class="main pantry">
             <h2>Pantry</h2>
+
+            <section class="pantry search">
+                <label for="search-name">Search for ingredient: <br><input id="search-name" type="text" placeholder="i.e. apple"><br></label>
+            </section> 
+
             <ul id="pantry-list">
                 <!-- Pantry list items will display here -->
             </ul>
@@ -64,6 +84,10 @@
     
         <section class="main">
             <h2>Recipes</h2>
+
+            <section class="recipe search">
+                <label for="recipe-search">Search for recipe: <br><input id="recipe-search" type="text" placeholder="i.e. Spaghetti"><br></label>
+            </section> 
         </section>
     
         <section class="main">
