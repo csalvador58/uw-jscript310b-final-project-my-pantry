@@ -1,16 +1,21 @@
 // Check that DOM content had all loaded before running code
 // document.addEventListener('DOMContentLoaded', function() {
 
-    const pantryDelete = document.getElementsByClassName('delete');
-    const pantryInput = document.getElementById('input-pantry');
+    const allInputs = document.getElementsByTagName('input');
+    const allSelects = document.getElementsByTagName('select');
+    // const deleteElement = document.getElementsByClassName('delete');
+    const pantryInput = document.getElementById('add-to-pantry');
     const pantryItemName = document.getElementById('item-name');
     const pantryList = document.getElementById('pantry-list');
     const pantryQuantity = document.getElementById('quantity');
     const pantryMeasureUnit = document.getElementById('unit-of-measure');
-    const recipeInput = document.getElementById('input-recipe');
+    
+    const recipeInput = document.getElementById('add-recipe-item');
+    const recipeItem = document.getElementById('recipe-item');
 
     const pantry = [];
     const recipes = [];
+    const recipe_temp = [];
 
 
     class Ingredient {
@@ -58,26 +63,31 @@
 
 
     // **************EVENT LISTENERS*************
-    document.addEventListener('click', function(e) {
+    
+    
+    pantryList.addEventListener('click', function(e) {
         console.log(e.target)
-        console.log(e.target.className)
-        console.log(e.target.id)
+        // console.log(e.target.className)
+        // console.log(e.target.id)
         if(e.target.className === 'delete') e.target.parentElement.remove();
         for (let ingredient of pantry) {
             if(ingredient.name === e.target.id) ingredient.delete();
         }
     });
     
-    pantryInput.addEventListener('submit', function(e) {
-        e.preventDefault();
+    pantryInput.addEventListener('click', function(e) {
+        console.log(e.target)
         addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
+
+        resetInputs();
     });
 
 
-
-    recipeInput.addEventListener('submit', function(e) {
-        e.preventDefault();
+    recipeInput.addEventListener('click', function(e) {
         console.log(e.target)
+        
+        console.log(recipeItem.value)
+
     });
 
 
@@ -110,10 +120,17 @@
         pantryList.innerHTML = "";
 
         for (let ingredient of pantry) {
-            let newListItem = document.createElement('li');
-            newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="delete">Delete</a>\n<a class="add-to-recipe">Add to recipe</a>\n`;
-            pantryList.appendChild(newListItem);
+            if(ingredient.qty){
+                let newListItem = document.createElement('li');
+                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="delete">Delete</a>\n<a class="add-to-recipe">Add to recipe</a>\n`;
+                pantryList.appendChild(newListItem);
+            }
         }
+    }
+
+    function resetInputs() {
+        Array.from(allInputs).forEach(input => input.value = "");
+        Array.from(allSelects).forEach(select => select.value = "");
     }
 
 // });
