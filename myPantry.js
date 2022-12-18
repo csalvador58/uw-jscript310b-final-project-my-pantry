@@ -118,6 +118,7 @@
                 
             recipeItem.value = pantryLookup.name;
             recipeItemUnit.value = pantryLookup.unit;
+            resetInputsExceptFor('recipe-item', 'recipe-item-unit');
         }
 
         displayPantry();
@@ -125,11 +126,27 @@
 
     recipeList.addEventListener('click', function(e) {   
         // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
+        
+        if(e.target.classList.contains('delete')) {
+            e.target.parentElement.remove();
+            // Remove recipe from recipes array
+            recipes.splice(recipes.findIndex(recipe => recipe.name === e.target.id), 1);
+            displayRecipes();
+        }
 
-        recipes.splice(recipes.map(recipe => recipe.name).indexOf(e.target.id), 1);
-        if(e.target.classList.contains('delete')) e.target.parentElement.remove();
-
-        displayRecipes();
+        if(e.target.classList.contains('view-recipe')) {
+            console.log(e.target.parentElement)
+            let newUL = document.createElement('ul');
+            newUL.classList.add('nested-ul');
+            let recipeLookup = recipes.find(recipe => recipe.name === e.target.previousElementSibling.id);
+            for (let ingredient of recipeLookup.ingredients) {
+                let newListItem = document.createElement('li');
+                newListItem.innerHTML = `\n• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}\n`;
+                newUL.appendChild(newListItem);
+            }
+            e.target.parentElement.appendChild(newUL);
+        } 
+        
     });
 
     
