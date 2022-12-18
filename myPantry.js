@@ -135,16 +135,36 @@
         }
 
         if(e.target.classList.contains('view-recipe')) {
-            console.log(e.target.parentElement)
-            let newUL = document.createElement('ul');
-            newUL.classList.add('nested-ul');
-            let recipeLookup = recipes.find(recipe => recipe.name === e.target.previousElementSibling.id);
-            for (let ingredient of recipeLookup.ingredients) {
-                let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}\n`;
-                newUL.appendChild(newListItem);
+            console.log(e.target.parentElement);
+            // e.target.parentElement.classList.add('recipe-view-enabled');
+            // e.target.innerText = 'Hide';
+            
+            console.log(e.target.parentElement);
+            console.log(e.target.nextElementSibling);
+
+            // if(! e.target.nextElementSibling && (e.target.nextElementSibling.classList == 'recipe-view-enabled')) {
+                
+            // }
+            if (e.target.parentElement.classList.contains('recipe-view-enabled')) {
+                e.target.innerText = 'View';
+                e.target.parentElement.classList.remove('recipe-view-enabled');
+                e.target.nextElementSibling.remove();
+
+            } else {
+                e.target.parentElement.classList.add('recipe-view-enabled');
+                e.target.innerText = 'Hide';
+
+                let newUL = document.createElement('ul');
+                // newUL.classList.add('recipe-view-enabled');
+                let recipeLookup = recipes.find(recipe => recipe.name === e.target.previousElementSibling.id);
+                for (let ingredient of recipeLookup.ingredients) {
+                    let newListItem = document.createElement('li');
+                    newListItem.classList.add('tab');
+                    newListItem.innerHTML = `\n• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}\n`;
+                    newUL.appendChild(newListItem);
+                }
+                e.target.parentElement.appendChild(newUL);
             }
-            e.target.parentElement.appendChild(newUL);
         } 
         
     });
