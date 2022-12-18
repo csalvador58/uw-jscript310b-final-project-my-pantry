@@ -21,6 +21,7 @@
 
     const saveData = document.getElementById('save-data');
     const loadData = document.getElementById('load-data');
+    const eraseData = document.getElementById('erase-data');
 
 
     const pantry = [];
@@ -86,7 +87,7 @@
     
     
     pantryList.addEventListener('click', function(e) {
-        if(e.target.className === 'delete') e.target.parentElement.remove();
+        if(e.target.classList.contains('delete')) e.target.parentElement.remove();
         for (let ingredient of pantry) {
             if(ingredient.name === e.target.id) ingredient.delete();
         }
@@ -107,18 +108,11 @@
         resetInputsExceptFor('recipe-name');
     });
 
-    recipeList.addEventListener('click', function(e) {
-        console.log(e.target)
-        // console.log(e.target.className)
-        console.log(e.target.id)
-        
+    recipeList.addEventListener('click', function(e) {   
         // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
-        // recipes.splice(1, recipes.map(recipe => recipe.name).indexOf(e.target.id));
-        console.log(e.target.classList.contains('delete'))
-        console.log(e.target.parentElement)
-        if(e.target.classList.contains('delete')) {
-            e.target.parentElement.remove();
-        };
+        
+        recipes.splice(recipes.map(recipe => recipe.name).indexOf('carbonara'), 1);
+        if(e.target.classList.contains('delete')) e.target.parentElement.remove();
 
         displayRecipes();
     });
@@ -175,6 +169,22 @@
         for (recipe of recipeDataParse) {
             recipes.push(recipe);
         }
+
+        resetInputsExceptFor();
+        displayPantry();
+        displayRecipes();
+    });
+
+    eraseData.addEventListener('click', function(e) {
+        // Reset arrays before loading data from local storage
+        pantry.length = 0;
+        recipes.length = 0;    
+        
+        const pantryData = JSON.stringify(pantry);
+        const recipeData = JSON.stringify(recipes);
+
+        localStorage.setItem('pantryData', pantryData);
+        localStorage.setItem('recipeData', recipeData);
 
         resetInputsExceptFor();
         displayPantry();
