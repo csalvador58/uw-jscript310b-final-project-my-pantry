@@ -97,7 +97,7 @@ ul {
 }
 
 .main {
-    height: 80vh;
+    height: 100%;
     width: 100%;
     padding: 1em;
     box-sizing: border-box;
@@ -108,4 +108,5 @@ ul {
 
 .main-container {
     display: flex;
+    /* height: fit-content; */
 }

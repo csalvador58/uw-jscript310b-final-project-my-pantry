@@ -14,6 +14,7 @@
     const recipeItem = document.getElementById('recipe-item');
     const recipeItemQty = document.getElementById('recipe-item-qty');
     const recipeItemUnit = document.getElementById('recipe-item-unit');
+    const recipeList = document.getElementById('recipe-list');
     const recipeName = document.getElementById('recipe-name');
     const recipeSubmit = document.getElementById('submit-recipe');
     const ingredientsList = document.getElementById('ingredients-list');
@@ -60,7 +61,7 @@
                         ingredient.qty = qty;
                         // Prompt user to confirm unit of measurement if already exists in database.
                         if(ingredient.unit !== unit) {
-                            let response = confirm(`The unit of measurement for "${ingredientName}" already exists in the database. Do you want to update the from "${ingredient.unit}" to "${unit}"`);
+                            let response = confirm(`The unit of measurement for "${ingredientName}" already exists in the database. Do you want to update this from "${ingredient.unit}" to "${unit}"`);
                             if(response) {
                                 ingredient.unit = unit;
                                 alert(`The unit of measurement for ${ingredientName} has been updated to "${unit}".`)
@@ -79,24 +80,12 @@
     }
     const tempRecipe = new Recipe('temp_recipe');
 
-    // ***************TEST CODE
-    const apple = new Ingredient('apple', 1, 'piece');
-    const bread = new Ingredient('bread', 1, 'misc');
-    console.log(apple)
     
-    const applePie = new Recipe('Apple pie');
-    const pecanPie = new Recipe('Pecan pie');
-
-    // ***************TEST CODE
-
 
     // **************EVENT LISTENERS*************
     
     
     pantryList.addEventListener('click', function(e) {
-        console.log(e.target)
-        // console.log(e.target.className)
-        // console.log(e.target.id)
         if(e.target.className === 'delete') e.target.parentElement.remove();
         for (let ingredient of pantry) {
             if(ingredient.name === e.target.id) ingredient.delete();
@@ -105,7 +94,6 @@
     });
     
     pantryInput.addEventListener('click', function(e) {
-        console.log(e.target)
         addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
 
         resetInputsExceptFor();
@@ -119,23 +107,23 @@
         resetInputsExceptFor('recipe-name');
     });
 
-    recipeSubmit.addEventListener('click', function(e) {
+    recipeList.addEventListener('click', function(e) {
         console.log(e.target)
+        // console.log(e.target.className)
+        console.log(e.target.id)
         
-        
-        console.log(recipeName.value)
-        // console.log(recipeItem.value)
-        // console.log(recipeItemQty.value)
-        // console.log(recipeItemUnit.value)
-        
+        // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
+        // recipes.splice(1, recipes.map(recipe => recipe.name).indexOf(e.target.id));
+        console.log(e.target.classList.contains('delete'))
+        console.log(e.target.parentElement)
+        if(e.target.classList.contains('delete')) {
+            e.target.parentElement.remove();
+        };
 
-        // console.log(tempRecipe)
+        displayRecipes();
+    });
 
-        // Create new Recipe object
-
-        // Read and store recipe name
-
-        // Copy temp recipe data to new Recipe object
+    recipeSubmit.addEventListener('click', function(e) {
 
         const newRecipe = new Recipe(recipeName.value);
 
@@ -153,6 +141,7 @@
         
         ingredientsList.innerHTML = "";
         resetInputsExceptFor();
+        displayRecipes();
     });
 
     // JSON.stringify turns an object to a string
@@ -160,37 +149,36 @@
     // localStorage.setItem(key, value);
 
     saveData.addEventListener('click', function(e) {
-        console.log(e.target)
 
         const pantryData = JSON.stringify(pantry);
         const recipeData = JSON.stringify(recipes);
 
-        console.log(pantryData)
-        console.log(recipeData)
-
-        const pantryDataParse = JSON.parse(pantryData);
-        const recipeDataParse = JSON.parse(recipeData);
-
-        console.log(pantryDataParse)
-        console.log(recipeDataParse)
-
         localStorage.setItem('pantryData', pantryData);
         localStorage.setItem('recipeData', recipeData);
         
-
-
+        resetInputsExceptFor();
+        displayPantry();
+        displayRecipes();
     });
 
     loadData.addEventListener('click', function(e) {
-        console.log(e.target)
+        // Reset arrays before loading data from local storage
+        pantry.length = 0;
+        recipes.length = 0;        
 
         const pantryData = JSON.parse(localStorage.getItem('pantryData'));
-
         for(let ingredient of pantryData) {
             addToPantry(ingredient.name, ingredient.qty, ingredient.unit);
         }
+
+        const recipeDataParse = JSON.parse(localStorage.getItem('recipeData'));
+        for (recipe of recipeDataParse) {
+            recipes.push(recipe);
+        }
+
+        resetInputsExceptFor();
         displayPantry();
-        
+        displayRecipes();
     });
 
 
@@ -205,7 +193,7 @@
                     ingredient.updateQty(qty);
                     // Prompt user to confirm unit of measurement if already exists in database.
                     if(ingredient.unit !== unitOfMeasure) {
-                        let response = confirm(`The unit of measurement for "${ingredient.name}" already exists in the database. Do you want to update the from "${ingredient.unit}" to "${unitOfMeasure}"`);
+                        let response = confirm(`The unit of measurement for "${ingredient.name}" already exists in the database. Do you want to update this from "${ingredient.unit}" to "${unitOfMeasure}"`);
                         if(response) {
                             ingredient.unit = unitOfMeasure;
                             alert(`The unit of measurement for ${ingredient.name} has been updated to "${unitOfMeasure}".`)
@@ -225,7 +213,7 @@
         for (let ingredient of pantry) {
             if(ingredient.qty){
                 let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
+                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
                 pantryList.appendChild(newListItem);
             }
         }
@@ -237,9 +225,19 @@
         for (let ingredient of tempRecipe.ingredients) {
             if(ingredient.qty){
                 let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n`;
+                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n`;
                 ingredientsList.appendChild(newListItem);
             }
+        }
+    }
+
+    function displayRecipes() {
+        recipeList.innerHTML = "";
+
+        for (let recipe of recipes) {
+            let newListItem = document.createElement('li');
+            newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
+            recipeList.appendChild(newListItem);
         }
     }
 
@@ -256,9 +254,9 @@
         });
     }
 
-    function readWriteData(action) {
+    // function readWriteData(action) {
 
 
-    }
+    // }
 
 // });
