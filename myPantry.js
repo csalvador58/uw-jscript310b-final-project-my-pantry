@@ -124,6 +124,19 @@
         displayPantry();
     });
 
+    ingredientsList.addEventListener('click', function(e) {
+        console.log(e.target)
+
+        if(e.target.classList.contains('delete')) {
+            e.target.parentElement.remove();
+            for (let ingredient of tempRecipe.ingredients) {
+                if(ingredient.name === e.target.id) tempRecipe.delete(ingredient);
+            }
+        }
+
+        displayInputRecipe();
+    });
+
     recipeList.addEventListener('click', function(e) {   
         // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
         
@@ -135,16 +148,7 @@
         }
 
         if(e.target.classList.contains('view-recipe')) {
-            console.log(e.target.parentElement);
-            // e.target.parentElement.classList.add('recipe-view-enabled');
-            // e.target.innerText = 'Hide';
             
-            console.log(e.target.parentElement);
-            console.log(e.target.nextElementSibling);
-
-            // if(! e.target.nextElementSibling && (e.target.nextElementSibling.classList == 'recipe-view-enabled')) {
-                
-            // }
             if (e.target.parentElement.classList.contains('recipe-view-enabled')) {
                 e.target.innerText = 'View';
                 e.target.parentElement.classList.remove('recipe-view-enabled');
@@ -155,7 +159,7 @@
                 e.target.innerText = 'Hide';
 
                 let newUL = document.createElement('ul');
-                // newUL.classList.add('recipe-view-enabled');
+                
                 let recipeLookup = recipes.find(recipe => recipe.name === e.target.previousElementSibling.id);
                 for (let ingredient of recipeLookup.ingredients) {
                     let newListItem = document.createElement('li');
