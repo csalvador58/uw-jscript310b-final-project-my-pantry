@@ -87,16 +87,18 @@
     
 
     // **************EVENT LISTENERS*************
+
+    // Search pantry ingredients
     pantrySearch.addEventListener('keydown', function(e) {
         // Delay needed to store search input accurately
         setTimeout( function() {
-    
             const regex = e.target.value;
             console.log(`Regex ${regex}`);
             displayPantry(regex);
         }, 0); 
     });
 
+    // Search recipes
     recipeSearch.addEventListener('keydown', function(e) {
         // Delay needed to store search input accurately
         setTimeout( function() {
@@ -107,6 +109,8 @@
         }, 0); 
     });
     
+    // Delete ingredients from pantry array. 
+    // Add to recipe from pantry list to populate name and unit of ingredient when building a recipe.
     pantryList.addEventListener('click', function(e) {
         if(e.target.classList.contains('delete')) e.target.parentElement.remove();
         for (let ingredient of pantry) {
@@ -124,6 +128,7 @@
         displayPantry();
     });
 
+    // Delete ingredient from list when building a recipe.
     ingredientsList.addEventListener('click', function(e) {
         console.log(e.target)
 
@@ -137,6 +142,8 @@
         displayInputRecipe();
     });
 
+    // Delete a recipe from Recipe list section.
+    // Show list of ingredients for a recipe listed.
     recipeList.addEventListener('click', function(e) {   
         // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
         
@@ -173,14 +180,14 @@
         
     });
 
-    
+    // Add an item to pantry.
     pantryInput.addEventListener('click', function(e) {
         addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
 
         resetInputsExceptFor();
     });
 
-
+    // Add an ingredient to a temp recipe array used for recipe building.
     recipeInput.addEventListener('click', function(e) {    
         tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
 
@@ -189,7 +196,7 @@
     });
 
     
-
+    // Copy ingredients from temp recipe and create a new recipe object to store.
     recipeSubmit.addEventListener('click', function(e) {
 
         const newRecipe = new Recipe(recipeName.value);
@@ -215,6 +222,7 @@
     // JSON.parse turns a string to an object
     // localStorage.setItem(key, value);
 
+    // Save pantry and recipe data to local storage.
     saveData.addEventListener('click', function(e) {
 
         const pantryData = JSON.stringify(pantry);
@@ -228,6 +236,7 @@
         displayRecipes();
     });
 
+    // Load pantry and recipe data from local storage.
     loadData.addEventListener('click', function(e) {
         // Reset arrays before loading data from local storage
         pantry.length = 0;
@@ -248,6 +257,7 @@
         displayRecipes();
     });
 
+    // Erase data from local storage and pantry/recipe arrays.
     eraseData.addEventListener('click', function(e) {
         // Reset arrays before loading data from local storage
         pantry.length = 0;
@@ -360,9 +370,5 @@
         });
     }
 
-    // function readWriteData(action) {
-
-
-    // }
 
 // });
