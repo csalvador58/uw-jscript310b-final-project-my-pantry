@@ -14,6 +14,8 @@
     const recipeItem = document.getElementById('recipe-item');
     const recipeItemQty = document.getElementById('recipe-item-qty');
     const recipeItemUnit = document.getElementById('recipe-item-unit');
+    const recipeName = document.getElementById('recipe-name');
+    const recipeSubmit = document.getElementById('submit-recipe');
     const ingredientsList = document.getElementById('ingredients-list');
 
     const pantry = [];
@@ -101,23 +103,31 @@
         console.log(e.target)
         addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
 
-        resetInputs();
+        resetInputsExceptFor();
     });
 
 
-    recipeInput.addEventListener('click', function(e) {
-        console.log(e.target)
-        
-        console.log(recipeItem.value)
-        console.log(recipeItemQty.value)
-        console.log(recipeItemUnit.value)
+    recipeInput.addEventListener('click', function(e) {    
         tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
 
-        console.log(tempRecipe)
-
         displayInputRecipe();
-        resetInputs();
+        resetInputsExceptFor('recipe-name');
+    });
 
+    recipeSubmit.addEventListener('click', function(e) {
+        // console.log(e.target)
+        
+        
+        // console.log(recipeName.value)
+        // console.log(recipeItem.value)
+        // console.log(recipeItemQty.value)
+        // console.log(recipeItemUnit.value)
+        
+
+        // console.log(tempRecipe)
+
+        ingredientsList.innerHTML = "";
+        resetInputsExceptFor();
     });
 
 
@@ -170,9 +180,17 @@
         }
     }
 
-    function resetInputs() {
-        Array.from(allInputs).forEach(input => input.value = "");
-        Array.from(allSelects).forEach(select => select.value = "");
+    function resetInputsExceptFor(...exceptions) {
+        const inputs = Array.from(allInputs);
+        const selects = Array.from(allSelects);
+        
+        inputs.forEach(input => {
+            if(! exceptions.includes(input.id)) input.value = "";
+        });
+
+        selects.forEach(select => {
+            if(! exceptions.includes(select.id)) select.value = "";
+        });
     }
 
 // });

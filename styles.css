@@ -1,5 +1,5 @@
 :root {
-    --text-white: rgb(248, 233, 255);
+    --text-white: rgb(255, 255, 255);
     --text-black-alt: rgb(28, 25, 29);
     --background-black: black;
     --background-blue: rgb(25, 25, 164);
@@ -28,7 +28,7 @@ body {
 
 .button {
     border: none;
-    color: white;
+    color: var(--text-white);
     padding: 0.5em;
     text-align: center;
     text-decoration: none;
