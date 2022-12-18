@@ -115,10 +115,10 @@
     });
 
     recipeSubmit.addEventListener('click', function(e) {
-        // console.log(e.target)
+        console.log(e.target)
         
         
-        // console.log(recipeName.value)
+        console.log(recipeName.value)
         // console.log(recipeItem.value)
         // console.log(recipeItemQty.value)
         // console.log(recipeItemUnit.value)
@@ -126,6 +126,26 @@
 
         // console.log(tempRecipe)
 
+        // Create new Recipe object
+
+        // Read and store recipe name
+
+        // Copy temp recipe data to new Recipe object
+
+        const newRecipe = new Recipe(recipeName.value);
+
+        for(let ingredient of tempRecipe.ingredients) {
+            newRecipe.add(ingredient.name, ingredient.qty, ingredient.unit);
+        }
+
+        recipes.push(newRecipe);
+
+        
+
+        // Clear temp recipe
+        tempRecipe.name = null;
+        tempRecipe.ingredients = [];
+        
         ingredientsList.innerHTML = "";
         resetInputsExceptFor();
     });
