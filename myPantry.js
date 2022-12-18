@@ -125,7 +125,7 @@
 
     recipeList.addEventListener('click', function(e) {   
         // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
-        
+
         recipes.splice(recipes.map(recipe => recipe.name).indexOf(e.target.id), 1);
         if(e.target.classList.contains('delete')) e.target.parentElement.remove();
 
@@ -252,16 +252,7 @@
     function displayPantry(search) {
         pantryList.innerHTML = "";
 
-        const regex = new RegExp( `^${search}`, 'gi');
-        console.log(regex)
-        // if(! (regex[expression].test(str))) {
-        //     el.classList.add('invalid'); 
-        //     el.setCustomValidity(`Your ${el.id} is invalid`);
-        // } else {
-        //     el.classList.remove('invalid'); 
-        //     el.setCustomValidity('');
-        // }  
-        // && regex.test(ingredient.name)
+        const regex = new RegExp(search, 'gi');
         for (let ingredient of pantry) {
             if(ingredient.qty) {
                 if(search) {
@@ -298,19 +289,18 @@
     function displayRecipes(search) {
         recipeList.innerHTML = "";
 
-        const regex = new RegExp( `^${search}`, 'gi');
-        console.log(regex)
+        const regex = new RegExp(search, 'gi');
 
         for (let recipe of recipes) {
             if(search) {
                 if(regex.test(recipe.name)) {
                     let newListItem = document.createElement('li');
-                    newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
+                    newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
                     recipeList.appendChild(newListItem);
                 }
             } else {
                 let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
+                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
                 recipeList.appendChild(newListItem);
             }
         }

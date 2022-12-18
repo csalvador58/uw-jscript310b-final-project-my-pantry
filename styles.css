@@ -43,7 +43,7 @@ body {
     background-color: var(--background-blue);
 }
 
-.add-to-recipe {
+.add-to-recipe, .view-recipe {
     background-color: var(--background-green);
 }
 
