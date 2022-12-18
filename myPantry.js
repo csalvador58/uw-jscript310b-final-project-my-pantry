@@ -18,6 +18,10 @@
     const recipeSubmit = document.getElementById('submit-recipe');
     const ingredientsList = document.getElementById('ingredients-list');
 
+    const saveData = document.getElementById('save-data');
+    const loadData = document.getElementById('load-data');
+
+
     const pantry = [];
     const recipes = [];
     
@@ -97,6 +101,7 @@
         for (let ingredient of pantry) {
             if(ingredient.name === e.target.id) ingredient.delete();
         }
+        displayPantry();
     });
     
     pantryInput.addEventListener('click', function(e) {
@@ -148,6 +153,44 @@
         
         ingredientsList.innerHTML = "";
         resetInputsExceptFor();
+    });
+
+    // JSON.stringify turns an object to a string
+    // JSON.parse turns a string to an object
+    // localStorage.setItem(key, value);
+
+    saveData.addEventListener('click', function(e) {
+        console.log(e.target)
+
+        const pantryData = JSON.stringify(pantry);
+        const recipeData = JSON.stringify(recipes);
+
+        console.log(pantryData)
+        console.log(recipeData)
+
+        const pantryDataParse = JSON.parse(pantryData);
+        const recipeDataParse = JSON.parse(recipeData);
+
+        console.log(pantryDataParse)
+        console.log(recipeDataParse)
+
+        localStorage.setItem('pantryData', pantryData);
+        localStorage.setItem('recipeData', recipeData);
+        
+
+
+    });
+
+    loadData.addEventListener('click', function(e) {
+        console.log(e.target)
+
+        const pantryData = JSON.parse(localStorage.getItem('pantryData'));
+
+        for(let ingredient of pantryData) {
+            addToPantry(ingredient.name, ingredient.qty, ingredient.unit);
+        }
+        displayPantry();
+        
     });
 
 
@@ -211,6 +254,11 @@
         selects.forEach(select => {
             if(! exceptions.includes(select.id)) select.value = "";
         });
+    }
+
+    function readWriteData(action) {
+
+
     }
 
 // });
