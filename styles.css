@@ -2,9 +2,9 @@
     --text-white: rgb(248, 233, 255);
     --text-black-alt: rgb(28, 25, 29);
     --background-black: black;
-    --background-blue: rgb(59, 59, 99);
-    --background-blue-dark: rgb(9, 9, 66);
-    --background-gold: rgba(255, 215, 0, 0.95);
+    --background-blue: rgb(25, 25, 164);
+    --background-red: rgb(145, 34, 14);
+    --background-green: rgba(11, 212, 31, 0.95);
 }
 
 * {
@@ -25,19 +25,42 @@ body {
     font-size: 1.6rem;
 }
 
+
 .button {
-    background-color: var(--background-black);
     border: none;
     color: white;
-    padding: 1em;
+    padding: 0.5em;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 0.75em;
     margin: 1em auto;
     cursor: pointer;
+    border-radius: 8px;
+}
+
+.add {
+    background-color: var(--background-blue);
+}
+
+.add-to-recipe {
+    background-color: var(--background-green);
+}
+
+.delete {
+    background-color: var(--background-red);
+}
+
+.submit {
+    background-color: var(--background-black);
+    border: none;
+    padding: 1em;
+    font-size: 1em;
+    margin: 1em auto;
     border-radius: 12px;
-  }
+}
+
+
 
 h1 {
     font-size: 5rem;

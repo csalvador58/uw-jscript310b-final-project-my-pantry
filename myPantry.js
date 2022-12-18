@@ -12,10 +12,13 @@
     
     const recipeInput = document.getElementById('add-recipe-item');
     const recipeItem = document.getElementById('recipe-item');
+    const recipeItemQty = document.getElementById('recipe-item-qty');
+    const recipeItemUnit = document.getElementById('recipe-item-unit');
+    const ingredientsList = document.getElementById('ingredients-list');
 
     const pantry = [];
     const recipes = [];
-    const recipe_temp = [];
+    
 
 
     class Ingredient {
@@ -37,19 +40,38 @@
             this.name = name;
             this.ingredients = [];
         }
-        add(ingredient, qty, unit) {
+        add(ingredientName, qty, unit) {
             const recipeIngredient = {
-                name: ingredient.name,
+                name: ingredientName,
                 qty: qty,
                 unit: unit
             }
-            this.ingredients.push(recipeIngredient);
+
+            if(this.ingredients.some(ingredient => ingredient.name.includes(ingredientName))) {
+                // Lookup object name in pantry array
+                for (let ingredient of this.ingredients) {
+                    if(ingredient.name === ingredientName) {
+                        ingredient.qty = qty;
+                        // Prompt user to confirm unit of measurement if already exists in database.
+                        if(ingredient.unit !== unit) {
+                            let response = confirm(`The unit of measurement for "${ingredientName}" already exists in the database. Do you want to update the from "${ingredient.unit}" to "${unit}"`);
+                            if(response) {
+                                ingredient.unit = unit;
+                                alert(`The unit of measurement for ${ingredientName} has been updated to "${unit}".`)
+                            } else alert(`The unit of measurement for ${ingredientName} was not updated.`)
+                        }
+                    }
+                }
+            } else {
+                this.ingredients.push(recipeIngredient);
+            }
         }
         delete(ingredient) {
-            let index = this.ingredients.indexOf(ingredient.name); // find index of ingredient
+            let index = this.ingredients.indexOf(ingredient); // find index of ingredient
             this.ingredients.splice(index, 1);  // remove ingredient from array
         }
     }
+    const tempRecipe = new Recipe('temp_recipe');
 
     // ***************TEST CODE
     const apple = new Ingredient('apple', 1, 'piece');
@@ -87,6 +109,14 @@
         console.log(e.target)
         
         console.log(recipeItem.value)
+        console.log(recipeItemQty.value)
+        console.log(recipeItemUnit.value)
+        tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
+
+        console.log(tempRecipe)
+
+        displayInputRecipe();
+        resetInputs();
 
     });
 
@@ -122,8 +152,20 @@
         for (let ingredient of pantry) {
             if(ingredient.qty){
                 let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="delete">Delete</a>\n<a class="add-to-recipe">Add to recipe</a>\n`;
+                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
                 pantryList.appendChild(newListItem);
+            }
+        }
+    }
+
+    function displayInputRecipe() {
+        ingredientsList.innerHTML = "";
+
+        for (let ingredient of tempRecipe.ingredients) {
+            if(ingredient.qty){
+                let newListItem = document.createElement('li');
+                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit}</span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n`;
+                ingredientsList.appendChild(newListItem);
             }
         }
     }
