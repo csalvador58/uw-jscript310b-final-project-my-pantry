@@ -92,6 +92,10 @@ ul {
     list-style-type: none;
 }
 
+.hide {
+    display:none;
+}
+
 .input, .pantry, .recipe {
     margin: 1em 0;
 }

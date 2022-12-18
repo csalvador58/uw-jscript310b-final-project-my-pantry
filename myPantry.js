@@ -19,6 +19,9 @@
     const recipeSubmit = document.getElementById('submit-recipe');
     const ingredientsList = document.getElementById('ingredients-list');
 
+    const pantrySearch = document.getElementById('search-name');
+    const recipeSearch = document.getElementById('recipe-search');
+
     const saveData = document.getElementById('save-data');
     const loadData = document.getElementById('load-data');
     const eraseData = document.getElementById('erase-data');
@@ -84,15 +87,51 @@
     
 
     // **************EVENT LISTENERS*************
+    pantrySearch.addEventListener('keydown', function(e) {
+        // Delay needed to store search input accurately
+        setTimeout( function() {
     
+            const regex = e.target.value;
+            console.log(`Regex ${regex}`);
+            displayPantry(regex);
+        }, 0); 
+    });
+
+    recipeSearch.addEventListener('keydown', function(e) {
+        // Delay needed to store search input accurately
+        setTimeout( function() {
+    
+            const regex = e.target.value;
+            console.log(`Regex ${regex}`);
+            displayRecipes(regex);
+        }, 0); 
+    });
     
     pantryList.addEventListener('click', function(e) {
         if(e.target.classList.contains('delete')) e.target.parentElement.remove();
         for (let ingredient of pantry) {
             if(ingredient.name === e.target.id) ingredient.delete();
         }
+
+        if(e.target.classList.contains('add-to-recipe')) {
+            const pantryLookup = pantry.find(item => item.name === e.target.previousElementSibling.id);
+                
+            recipeItem.value = pantryLookup.name;
+            recipeItemUnit.value = pantryLookup.unit;
+        }
+
         displayPantry();
     });
+
+    recipeList.addEventListener('click', function(e) {   
+        // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
+        
+        recipes.splice(recipes.map(recipe => recipe.name).indexOf(e.target.id), 1);
+        if(e.target.classList.contains('delete')) e.target.parentElement.remove();
+
+        displayRecipes();
+    });
+
     
     pantryInput.addEventListener('click', function(e) {
         addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
@@ -108,14 +147,7 @@
         resetInputsExceptFor('recipe-name');
     });
 
-    recipeList.addEventListener('click', function(e) {   
-        // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
-        
-        recipes.splice(recipes.map(recipe => recipe.name).indexOf('carbonara'), 1);
-        if(e.target.classList.contains('delete')) e.target.parentElement.remove();
-
-        displayRecipes();
-    });
+    
 
     recipeSubmit.addEventListener('click', function(e) {
 
@@ -217,16 +249,38 @@
         displayPantry();
     }
 
-    function displayPantry() {
+    function displayPantry(search) {
         pantryList.innerHTML = "";
 
+        const regex = new RegExp( `^${search}`, 'gi');
+        console.log(regex)
+        // if(! (regex[expression].test(str))) {
+        //     el.classList.add('invalid'); 
+        //     el.setCustomValidity(`Your ${el.id} is invalid`);
+        // } else {
+        //     el.classList.remove('invalid'); 
+        //     el.setCustomValidity('');
+        // }  
+        // && regex.test(ingredient.name)
         for (let ingredient of pantry) {
-            if(ingredient.qty){
-                let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
-                pantryList.appendChild(newListItem);
+            if(ingredient.qty) {
+                if(search) {
+                    if(regex.test(ingredient.name)) {
+                        let newListItem = document.createElement('li');
+                        newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
+                        pantryList.appendChild(newListItem);
+                    }
+                } else {
+                    let newListItem = document.createElement('li');
+                    newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
+                    pantryList.appendChild(newListItem);
+                }
             }
         }
+
+    
+
+         
     }
 
     function displayInputRecipe() {
@@ -241,13 +295,24 @@
         }
     }
 
-    function displayRecipes() {
+    function displayRecipes(search) {
         recipeList.innerHTML = "";
 
+        const regex = new RegExp( `^${search}`, 'gi');
+        console.log(regex)
+
         for (let recipe of recipes) {
-            let newListItem = document.createElement('li');
-            newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
-            recipeList.appendChild(newListItem);
+            if(search) {
+                if(regex.test(recipe.name)) {
+                    let newListItem = document.createElement('li');
+                    newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
+                    recipeList.appendChild(newListItem);
+                }
+            } else {
+                let newListItem = document.createElement('li');
+                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n`;
+                recipeList.appendChild(newListItem);
+            }
         }
     }
 
