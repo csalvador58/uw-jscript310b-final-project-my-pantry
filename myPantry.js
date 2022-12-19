@@ -3,7 +3,7 @@
 
     const allInputs = document.getElementsByTagName('input');
     const allSelects = document.getElementsByTagName('select');
-    // const deleteElement = document.getElementsByClassName('delete');
+    
     const pantryInput = document.getElementById('add-to-pantry');
     const pantryItemName = document.getElementById('item-name');
     const pantryList = document.getElementById('pantry-list');
@@ -31,7 +31,6 @@
     const recipes = [];
     
 
-
     class Ingredient {
         constructor(name, qty, unit) {
             this.name = name;
@@ -55,7 +54,8 @@
             const recipeIngredient = {
                 name: ingredientName,
                 qty: qty,
-                unit: unit
+                unit: unit,
+                nutrition: null
             }
 
             if(this.ingredients.some(ingredient => ingredient.name.includes(ingredientName))) {
@@ -77,6 +77,9 @@
                 this.ingredients.push(recipeIngredient);
             }
         }
+        // getNutritionalData() {
+
+        // }
         delete(ingredient) {
             let index = this.ingredients.indexOf(ingredient); // find index of ingredient
             this.ingredients.splice(index, 1);  // remove ingredient from array
@@ -145,8 +148,17 @@
     // Delete a recipe from Recipe list section.
     // Show list of ingredients for a recipe listed.
     recipeList.addEventListener('click', function(e) {   
-        // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
         
+        // Call function to fetch data from API
+        if(e.target.classList.contains('view-nutrition')) {
+            console.log(e.target)
+            console.log(e.target.nextElementSibling)
+            console.log(e.target.parentElement)
+
+            getIngredientData(e.target.nextElementSibling.id);
+        }
+
+        // Map method used to return array of recipe names from object array. Splice and indexOf methods use to find location of specific recipe and remove from array.
         if(e.target.classList.contains('delete')) {
             e.target.parentElement.remove();
             // Remove recipe from recipes array
@@ -346,12 +358,12 @@
             if(search) {
                 if(regex.test(recipe.name)) {
                     let newListItem = document.createElement('li');
-                    newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
+                    newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
                     recipeList.appendChild(newListItem);
                 }
             } else {
                 let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
+                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
                 recipeList.appendChild(newListItem);
             }
         }
@@ -368,6 +380,60 @@
         selects.forEach(select => {
             if(! exceptions.includes(select.id)) select.value = "";
         });
+    }
+
+    function getIngredientData(recipe) {
+        const BASE_URL = 'https://api.edamam.com/api/nutrition-data?';
+        // const url = `${BASE_URL}app_id=${APP_ID}&app_key=${API_KEY}&nutrition-type=logging&ingr=${food}`;
+        
+        // let newUL = document.createElement('ul');
+                
+        let recipeLookup = recipes.find(element => element.name === recipe);
+        
+        
+        for (let ingredient of recipeLookup.ingredients) {
+            
+            if(!ingredient.nutrition) {
+                let ingredientToStr = `${ingredient.qty} ${ingredient.unit} ${ingredient.name}`;
+                let url = `${BASE_URL}app_id=${APP_ID}&app_key=${API_KEY}&nutrition-type=logging&ingr=${ingredientToStr}`;
+
+                fetch(url)
+                .then(function(data) {
+                    return data.json();
+                })
+                .then(function(responseJson) {
+                    console.log(responseJson)
+                    ingredient.nutrition = responseJson;
+
+                    let textWithNoSpaces = ingredient.name.replace(" ", "")
+                    let newListItem = document.createElement('li');
+                    
+                    newListItem.classList.add(textWithNoSpaces);
+
+                    newListItem.innerHTML = `<br>• ${ingredient.nutrition.ingredients[0].text} <br>
+                    Calories: ${ingredient.nutrition.calories} <br>
+                    ${ingredient.nutrition.totalNutrients.PROCNT.label}: ${ingredient.nutrition.totalNutrients.PROCNT.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.PROCNT.unit} <br>
+                    ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
+
+                    document.getElementById('nutrition-data').appendChild(newListItem);
+
+                });
+            } else {
+                let textWithNoSpaces = ingredient.name.replace(" ", "")
+                let newListItem = document.createElement('li');
+                    
+                newListItem.classList.add(textWithNoSpaces);
+
+                newListItem.innerHTML = `<br>• ${ingredient.nutrition.ingredients[0].text} <br>
+                Calories: ${ingredient.nutrition.calories} <br>
+                ${ingredient.nutrition.totalNutrients.PROCNT.label}: ${ingredient.nutrition.totalNutrients.PROCNT.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.PROCNT.unit} <br>
+                ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
+
+                document.getElementById('nutrition-data').appendChild(newListItem);
+
+            }
+        }
+
     }
 
 

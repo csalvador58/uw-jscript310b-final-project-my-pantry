@@ -6,6 +6,8 @@
     <title>My Pantry</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="myPantry.js" defer></script>
+    <script src="https://developer.edamam.com/attribution/badge.js" defer></script>
+    <script src="api-key.js" defer></script>
 </head>
 <body>
     <header>
@@ -23,9 +25,10 @@
                 <select id="unit-of-measure">
                     <option value="">--Select Unit of Measure </option>
                     <option value="g">g</option>
+                    <option value="tbs">tbs</option>
                     <option value="oz">fl oz</option>
                     <option value="cup(s)">cup</option>
-                    <option value="unit(s)">unit</option>
+                    <option value="lbs">lbs</option>
                 </select></label>
                 
                 <a id="add-to-pantry" class="button add">Add to Pantry</a>
@@ -43,9 +46,10 @@
                     <select id="recipe-item-unit">
                         <option value="">--Select Unit of Measure </option>
                         <option value="g">g</option>
+                        <option value="tbs">tbs</option>
                         <option value="oz">fl oz</option>
                         <option value="cup(s)">cup</option>
-                        <option value="unit(s)">unit</option>
+                        <option value="lbs">lbs</option>
                     </select></label>
 
                 <a id="add-recipe-item" class="button add">Add ingredient</a>
@@ -87,8 +91,12 @@
 
         </section>
     
-        <section class="main planning">
-            <h2>Meal Planning</h2>
+        <section class="main recipe-nutrition-data">
+            <h2>Nutritional data</h2>
+
+            <ul id="nutrition-data">
+                <!-- Recipe nutritional data will display here -->
+            </ul>
         </section>
     </div>
 
@@ -96,7 +104,8 @@
         <a id="save-data" class="button submit">Save Data</a>
         <a id="load-data" class="button submit">Load Data</a>
         <a id="erase-data" class="button submit">Erase Data</a>
-        <p>UW JSCRIPT 310B<br>Created by Chris Salvador</p>
+        <p>UW JSCRIPT 310B<br>Created by Chris Salvador<br><br></p>
+        <div id="edamam-badge" data-color="white"></div>
     </footer>
 </body>
 </html>
