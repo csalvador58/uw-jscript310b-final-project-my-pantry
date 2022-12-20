@@ -8,6 +8,9 @@
         ],                 
     };
 
+    const searchElements = document.querySelectorAll('[id*="search"]');
+
+
     const allInputs = document.getElementsByTagName('input');
     const allSelects = document.getElementsByTagName('select');
     
@@ -97,24 +100,68 @@
 
     // **************EVENT LISTENERS*************
 
+    // *****************************************************************WORKING_HERE*****************************************************************
     // Search pantry ingredients
     pantrySearch.addEventListener('keydown', function(e) {
+
         // Delay needed to store search input accurately
+        const myTarget = e.target;
+        
         setTimeout( function() {
-            const regex = e.target.value;
-            displayPantry(regex);
+    
+            const regex = myTarget.value;
+            // console.log(regex)
+            if (/^\s*$/.test(regex)) displayPantry();
+            else displayPantry(regex);
         }, 0); 
     });
 
     // Search recipes
     recipeSearch.addEventListener('keydown', function(e) {
         // Delay needed to store search input accurately
+        const myTarget = e.target;
+        
         setTimeout( function() {
     
-            const regex = e.target.value;
-            displayRecipes(regex);
+            const regex = myTarget.value;
+            // console.log(regex)
+            if (/^\s*$/.test(regex)) displayRecipes();
+            else displayRecipes(regex);
         }, 0); 
     });
+
+    // Search pantry or recipes
+
+    // Array.from(searchElements).forEach(function(element) {
+    //     element.addEventListener('keydown', function(e) {
+
+    //         // Delay needed to store regex accurately due to 'keydown' event
+    //         console.log(e.target.id)
+    //         console.log(e.target.value)
+    //         // const element = e.target.id;
+    //         // const regex = e.target.value;
+    //         setTimeout( function() {
+    //             const element = e.target.id;
+    //             const regex = e.target.value;
+    //             console.log(regex);
+    //             if(element === 'search-name') {
+    //                 displayPantry(regex);  
+    //         displayPantry(regex);
+    //                 displayPantry(regex);  
+    //             } else {
+    //                 displayRecipes(regex);  
+    //             } 
+                
+                
+                
+    //             // console.log(lookup[element])
+    //             // lookup[element];
+    //             // displayRecipes(regex);
+    //         }, 0); 
+    //     }, 0); 
+    //         }, 0); 
+    //     })
+    // })
    
     // Added a 'blur' listener to detect when a user leaves an input field. The useCapture argument was set to true to allow capture of all 'blur' events
     document.addEventListener('blur', function(e) {
@@ -235,7 +282,7 @@
         }
     });
 
-    //*****************************************************************WORKING_HERE***************************************************************
+    
     // Copy ingredients from temp recipe and create a new recipe object to store.
     recipeSubmit.addEventListener('click', function(e) {
 
@@ -345,11 +392,17 @@
         }
         displayPantry();
     }
-
-    function displayPantry(search) {
+// *****************************************************************WORKING_HERE*****************************************************************
+    function displayPantry(search=0) {
         pantryList.innerHTML = "";
 
-        const regex = new RegExp(search, 'gi');
+        let regex;
+        if (search.length < 2) {
+            regex = new RegExp(`^${search}`, 'gi');
+        } else {
+            regex = new RegExp(`${search}`, 'gi');
+        }
+
         for (let ingredient of pantry) {
             if(ingredient.qty) {
                 if(search) {
@@ -378,14 +431,23 @@
             }
         }
     }
-
-    function displayRecipes(search) {
+// *****************************************************************WORKING_HERE*****************************************************************
+// const searchRegex = /^[^\s]+|[\s\S]+$/;
+//*****************************************************************WORKING_HERE***************************************************************
+    function displayRecipes(search=0) {
         recipeList.innerHTML = "";
 
-        const regex = new RegExp(search, 'gi');
+        
+        let regex;
+        if (search.length < 2) {
+            regex = new RegExp(`^${search}`, 'gi');
+        } else {
+            regex = new RegExp(`${search}`, 'gi');
+        }
+
 
         for (let recipe of recipes) {
-            if(search) {
+            if(search.length > 0) {
                 if(regex.test(recipe.name)) {
                     let newListItem = document.createElement('li');
                     newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
@@ -411,15 +473,12 @@
             if(! exceptions.includes(select.id)) select.value = "";
         });
     }
-// *****************************************************************WORKING_HERE*****************************************************************
+
     // Form field validation function
     function isInputInvalid(el, input, expression) {
         // Regex array - 0 for min length 3 test, 1 for number test.
         const regex = [/.{3,}/gi, /^[+-]?\d*\.?\d+$/gi, /./gi ];
 
-        console.log(el)
-        console.log(input)
-        
         if(regex[expression].test(input)) {
             el.classList.remove('invalid');
             el.setCustomValidity('');

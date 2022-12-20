@@ -113,7 +113,7 @@ ul {
 .main {
     height: 100%;
     width: 100%;
-    padding: 1em;
+    padding: 2em;
     box-sizing: border-box;
     margin: auto 0.5rem;
     border-style: solid;
@@ -123,4 +123,8 @@ ul {
 .main-container {
     display: flex;
     /* height: fit-content; */
+}
+
+.main.recipe-nutrition-data {
+    text-align: center;
 }
