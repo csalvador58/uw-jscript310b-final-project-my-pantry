@@ -8,7 +8,7 @@
         ],                 
     };
 
-    const searchElements = document.querySelectorAll('[id*="search"]');
+    // const searchElements = document.querySelectorAll('[id*="search"]');
 
 
     const allInputs = document.getElementsByTagName('input');
@@ -412,6 +412,7 @@
     }
 
     function getIngredientData(recipe) {
+        document.getElementById('nutrition-data').innerHTML = "";
         const BASE_URL = 'https://api.edamam.com/api/nutrition-data?';
                 
         let recipeLookup = recipes.find(element => element.name === recipe);
@@ -441,6 +442,11 @@
                     ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
 
                     document.getElementById('nutrition-data').appendChild(newListItem);
+
+                    // Timing function for animation
+                    setTimeout(function() {
+                        document.getElementById('nutrition-data').classList.add('visible');
+                      }, 500); // delay in milliseconds
                 });
 
             } else {
@@ -455,6 +461,11 @@
                 ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
 
                 document.getElementById('nutrition-data').appendChild(newListItem);
+                
+                // Timing function for animation
+                setTimeout(function() {
+                    document.getElementById('nutrition-data').classList.add('visible');
+                  }, 500); // delay in milliseconds
 
             }
         }
