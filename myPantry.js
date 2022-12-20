@@ -98,80 +98,42 @@
     
     const tempRecipe = new Recipe('temp_recipe');
 
-    // **************EVENT LISTENERS*************
-
-    // *****************************************************************WORKING_HERE*****************************************************************
-    // Search pantry ingredients
-    pantrySearch.addEventListener('keydown', function(e) {
-
-        // Delay needed to store search input accurately
-        const myTarget = e.target;
-        
-        setTimeout( function() {
-    
-            const regex = myTarget.value;
-            // console.log(regex)
-            if (/^\s*$/.test(regex)) displayPantry();
-            else displayPantry(regex);
-        }, 0); 
-    });
-
-    // Search recipes
-    recipeSearch.addEventListener('keydown', function(e) {
-        // Delay needed to store search input accurately
-        const myTarget = e.target;
-        
-        setTimeout( function() {
-    
-            const regex = myTarget.value;
-            // console.log(regex)
-            if (/^\s*$/.test(regex)) displayRecipes();
-            else displayRecipes(regex);
-        }, 0); 
-    });
-
-    // Search pantry or recipes
-
-    // Array.from(searchElements).forEach(function(element) {
-    //     element.addEventListener('keydown', function(e) {
-
-    //         // Delay needed to store regex accurately due to 'keydown' event
-    //         console.log(e.target.id)
-    //         console.log(e.target.value)
-    //         // const element = e.target.id;
-    //         // const regex = e.target.value;
-    //         setTimeout( function() {
-    //             const element = e.target.id;
-    //             const regex = e.target.value;
-    //             console.log(regex);
-    //             if(element === 'search-name') {
-    //                 displayPantry(regex);  
-    //         displayPantry(regex);
-    //                 displayPantry(regex);  
-    //             } else {
-    //                 displayRecipes(regex);  
-    //             } 
-                
-                
-                
-    //             // console.log(lookup[element])
-    //             // lookup[element];
-    //             // displayRecipes(regex);
-    //         }, 0); 
-    //     }, 0); 
-    //         }, 0); 
-    //     })
-    // })
    
-    // Added a 'blur' listener to detect when a user leaves an input field. The useCapture argument was set to true to allow capture of all 'blur' events
-    document.addEventListener('blur', function(e) {
+    // Search pantry ingredients and recipe list
+    pantrySearch.addEventListener('keydown', processSearch);
+    recipeSearch.addEventListener('keydown', processSearch);
 
-        if( ['item-name', 'recipe-name', 'recipe-item'].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 0);
-        if( ['quantity', 'recipe-item-qty' ].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 1);
-        if( ['unit-of-measure', 'recipe.item-unit'].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 2);
-        
-        
-    }, true);
+    function processSearch(e) {
+        const eventTarget = e.target;
+
+         // Delay needed to store search input accurately
+        setTimeout(function() {
+            const regex = eventTarget.value;
+
+            // Handle search request when value are spaces
+            if (/^\s*$/.test(regex)) {
+                (e.target === pantrySearch) ? displayPantry() : displayRecipes(); 
+            } else {
+                (e.target === pantrySearch) ? displayPantry(regex) : displayRecipes(regex); 
+            }
+        }, 0);
+    }
+
+   
+    // Added a 'blur' listener to detect when a user leaves an input field.
+    document.addEventListener('blur', processInputValidationChecks, true);
+    
+    function processInputValidationChecks(e) {
+        if( ['item-name', 'recipe-name', 'recipe-item'].includes(e.target.id) ) {
+            isInputInvalid(e.target, e.target.value, 0);  
+        } 
+        if( ['quantity', 'recipe-item-qty' ].includes(e.target.id) ) {
+            isInputInvalid(e.target, e.target.value, 1);
+        } 
+        if( ['unit-of-measure', 'recipe.item-unit'].includes(e.target.id) ) {
+            isInputInvalid(e.target, e.target.value, 2);
+        } 
+    }
 
     // Delete ingredients from pantry array. 
     // Add to recipe from pantry list to populate name and unit of ingredient when building a recipe.
@@ -392,7 +354,7 @@
         }
         displayPantry();
     }
-// *****************************************************************WORKING_HERE*****************************************************************
+// *****************************************************************WORKING_HERE******************************************
     function displayPantry(search=0) {
         pantryList.innerHTML = "";
 
@@ -431,9 +393,7 @@
             }
         }
     }
-// *****************************************************************WORKING_HERE*****************************************************************
-// const searchRegex = /^[^\s]+|[\s\S]+$/;
-//*****************************************************************WORKING_HERE***************************************************************
+
     function displayRecipes(search=0) {
         recipeList.innerHTML = "";
 
@@ -460,6 +420,8 @@
             }
         }
     }
+
+    
 
     function resetInputsExceptFor(...exceptions) {
         const inputs = Array.from(allInputs);
