@@ -115,7 +115,7 @@
             displayRecipes(regex);
         }, 0); 
     });
-   //*****************************************************************WORKING_HERE***************************************************************
+   
     // Added a 'blur' listener to detect when a user leaves an input field. The useCapture argument was set to true to allow capture of all 'blur' events
     document.addEventListener('blur', function(e) {
 
@@ -202,19 +202,37 @@
         
     });
 
-    // Add an item to pantry.
+        // Add an item to pantry.
     pantryInput.addEventListener('click', function(e) {
-        addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
 
-        resetInputsExceptFor();
+         
+        isInputInvalid(pantryItemName, pantryItemName.value, 0);
+        isInputInvalid(pantryQuantity, pantryQuantity.value, 1);
+        isInputInvalid(pantryMeasureUnit, pantryMeasureUnit.value, 2);
+
+        if(! (pantryItemName.validity.customError + pantryQuantity.validity.customError + pantryMeasureUnit.validity.customError ) > 0 ) {
+            
+            addToPantry(pantryItemName.value, parseFloat(pantryQuantity.value), pantryMeasureUnit.value);
+
+            resetInputsExceptFor();
+        }
+        
     });
 
     // Add an ingredient to a temp recipe array used for recipe building.
-    recipeInput.addEventListener('click', function(e) {    
-        tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
+    recipeInput.addEventListener('click', function(e) {   
+        
+        isInputInvalid(recipeItem, recipeItem.value, 0);
+        isInputInvalid(recipeItemQty, recipeItemQty.value, 1);
+        isInputInvalid(recipeItemUnit, recipeItemUnit.value, 2);
 
-        displayInputRecipe();
-        resetInputsExceptFor('recipe-name');
+        if(! (recipeItem.validity.customError + recipeItemQty.validity.customError + recipeItemUnit.validity.customError ) > 0 ) {
+            
+            tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
+
+            displayInputRecipe();
+            resetInputsExceptFor('recipe-name');
+        }
     });
 
     //*****************************************************************WORKING_HERE***************************************************************
@@ -223,6 +241,7 @@
 
         // Run validity check
         isInputInvalid(recipeName, recipeName.value, 0);
+        if(tempRecipe.ingredients.length < 1) alert('Please add ingredients to create a recipe.');
 
         // Check validity error and ensure recipe list is not empty before creating new Recipe object
         if(! (recipeName.validity.customError + (tempRecipe.ingredients.length < 1)) > 0 ) {
@@ -398,12 +417,8 @@
         // Regex array - 0 for min length 3 test, 1 for number test.
         const regex = [/.{3,}/gi, /^[+-]?\d*\.?\d+$/gi, /./gi ];
 
-        
-
         console.log(el)
         console.log(input)
-        
-        // const regex = new RegExp(REGEX_EXP[expression], 'gi');
         
         if(regex[expression].test(input)) {
             el.classList.remove('invalid');
