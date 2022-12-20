@@ -1,5 +1,6 @@
 // Check that DOM content had all loaded before running code
 // document.addEventListener('DOMContentLoaded', function() {
+
     const REGEX_EXP = {
         'errorMsg': [                        // Custom validity error message array
             'Invalid input length, try again.',
@@ -512,5 +513,4 @@
             if (! exceptions.includes(select.id)) select.value = "";
         });
     }
-
 // });
