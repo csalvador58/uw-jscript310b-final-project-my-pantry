@@ -51,6 +51,10 @@ body {
     background-color: var(--background-black);
 }
 
+.invalid {
+    border: 3px solid red;
+}
+
 .view-nutrition {
     background-color: var(--background-blue);
 }
@@ -67,8 +71,6 @@ body {
     margin: 1em auto;
     border-radius: 12px;
 }
-
-
 
 h1 {
     font-size: 5rem;

@@ -1,5 +1,12 @@
 // Check that DOM content had all loaded before running code
 // document.addEventListener('DOMContentLoaded', function() {
+    const REGEX_EXP = {
+        'errorMsg': [                        // Custom validity error message array
+            'Invalid input length, try again.',
+            'Please enter a number.',
+            'Selection required.'
+        ],                 
+    };
 
     const allInputs = document.getElementsByTagName('input');
     const allSelects = document.getElementsByTagName('select');
@@ -84,10 +91,9 @@
             let index = this.ingredients.indexOf(ingredient); // find index of ingredient
             this.ingredients.splice(index, 1);  // remove ingredient from array
         }
-    }
-    const tempRecipe = new Recipe('temp_recipe');
-
+    }  
     
+    const tempRecipe = new Recipe('temp_recipe');
 
     // **************EVENT LISTENERS*************
 
@@ -96,7 +102,6 @@
         // Delay needed to store search input accurately
         setTimeout( function() {
             const regex = e.target.value;
-            console.log(`Regex ${regex}`);
             displayPantry(regex);
         }, 0); 
     });
@@ -107,11 +112,20 @@
         setTimeout( function() {
     
             const regex = e.target.value;
-            console.log(`Regex ${regex}`);
             displayRecipes(regex);
         }, 0); 
     });
-    
+   //*****************************************************************WORKING_HERE***************************************************************
+    // Added a 'blur' listener to detect when a user leaves an input field. The useCapture argument was set to true to allow capture of all 'blur' events
+    document.addEventListener('blur', function(e) {
+
+        if( ['item-name', 'recipe-name', 'recipe-item'].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 0);
+        if( ['quantity', 'recipe-item-qty' ].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 1);
+        if( ['unit-of-measure', 'recipe.item-unit'].includes(e.target.id) ) isInputInvalid(e.target, e.target.value, 2);
+        
+        
+    }, true);
+
     // Delete ingredients from pantry array. 
     // Add to recipe from pantry list to populate name and unit of ingredient when building a recipe.
     pantryList.addEventListener('click', function(e) {
@@ -133,7 +147,6 @@
 
     // Delete ingredient from list when building a recipe.
     ingredientsList.addEventListener('click', function(e) {
-        console.log(e.target)
 
         if(e.target.classList.contains('delete')) {
             e.target.parentElement.remove();
@@ -151,9 +164,6 @@
         
         // Call function to fetch data from API
         if(e.target.classList.contains('view-nutrition')) {
-            console.log(e.target)
-            console.log(e.target.nextElementSibling)
-            console.log(e.target.parentElement)
 
             getIngredientData(e.target.nextElementSibling.id);
         }
@@ -207,27 +217,32 @@
         resetInputsExceptFor('recipe-name');
     });
 
-    
+    //*****************************************************************WORKING_HERE***************************************************************
     // Copy ingredients from temp recipe and create a new recipe object to store.
     recipeSubmit.addEventListener('click', function(e) {
 
-        const newRecipe = new Recipe(recipeName.value);
+        // Run validity check
+        isInputInvalid(recipeName, recipeName.value, 0);
 
-        for(let ingredient of tempRecipe.ingredients) {
-            newRecipe.add(ingredient.name, ingredient.qty, ingredient.unit);
+        // Check validity error and ensure recipe list is not empty before creating new Recipe object
+        if(! (recipeName.validity.customError + (tempRecipe.ingredients.length < 1)) > 0 ) {
+            const newRecipe = new Recipe(recipeName.value);
+    
+            for(let ingredient of tempRecipe.ingredients) {
+                newRecipe.add(ingredient.name, ingredient.qty, ingredient.unit);
+            }
+    
+            recipes.push(newRecipe);
+    
+            // Clear temp recipe
+            tempRecipe.name = null;
+            tempRecipe.ingredients = [];
+            
+            ingredientsList.innerHTML = "";
+            resetInputsExceptFor();
+            displayRecipes();
         }
 
-        recipes.push(newRecipe);
-
-        
-
-        // Clear temp recipe
-        tempRecipe.name = null;
-        tempRecipe.ingredients = [];
-        
-        ingredientsList.innerHTML = "";
-        resetInputsExceptFor();
-        displayRecipes();
     });
 
     // JSON.stringify turns an object to a string
@@ -331,10 +346,6 @@
                 }
             }
         }
-
-    
-
-         
     }
 
     function displayInputRecipe() {
@@ -381,12 +392,33 @@
             if(! exceptions.includes(select.id)) select.value = "";
         });
     }
+// *****************************************************************WORKING_HERE*****************************************************************
+    // Form field validation function
+    function isInputInvalid(el, input, expression) {
+        // Regex array - 0 for min length 3 test, 1 for number test.
+        const regex = [/.{3,}/gi, /^[+-]?\d*\.?\d+$/gi, /./gi ];
+
+        
+
+        console.log(el)
+        console.log(input)
+        
+        // const regex = new RegExp(REGEX_EXP[expression], 'gi');
+        
+        if(regex[expression].test(input)) {
+            el.classList.remove('invalid');
+            el.setCustomValidity('');
+            
+        } else {
+            el.classList.add('invalid');
+            el.setCustomValidity(`${REGEX_EXP['errorMsg'][expression]}`);
+        }
+        document.getElementById('forms').reportValidity();
+    }
+
 
     function getIngredientData(recipe) {
         const BASE_URL = 'https://api.edamam.com/api/nutrition-data?';
-        // const url = `${BASE_URL}app_id=${APP_ID}&app_key=${API_KEY}&nutrition-type=logging&ingr=${food}`;
-        
-        // let newUL = document.createElement('ul');
                 
         let recipeLookup = recipes.find(element => element.name === recipe);
         
@@ -407,6 +439,8 @@
 
                     let textWithNoSpaces = ingredient.name.replace(" ", "")
                     let newListItem = document.createElement('li');
+
+                    // newListItem.style.opacity = 0;
                     
                     newListItem.classList.add(textWithNoSpaces);
 
@@ -417,10 +451,18 @@
 
                     document.getElementById('nutrition-data').appendChild(newListItem);
 
+                    // let animateDisplay = setInterval(function() {
+                    //     // if(newListItem.style.opacity < 1) 
+                    //     newListItem.style.opacity += parseFloat(0.1);
+                    //     // else clearInterval(animateDisplay);
+                    // }, 5000);
+
                 });
             } else {
                 let textWithNoSpaces = ingredient.name.replace(" ", "")
                 let newListItem = document.createElement('li');
+
+                // newListItem.style.opacity = 0;
                     
                 newListItem.classList.add(textWithNoSpaces);
 
@@ -430,6 +472,12 @@
                 ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
 
                 document.getElementById('nutrition-data').appendChild(newListItem);
+
+                // let animateDisplay = setInterval(() => {
+                //     // if(newListItem.style.opacity < 1) 
+                //     newListItem.style.opacity += 0.1;
+                //     // else clearInterval(animateDisplay);
+                // }, 500);
 
             }
         }
