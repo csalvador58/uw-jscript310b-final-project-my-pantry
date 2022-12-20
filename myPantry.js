@@ -87,9 +87,7 @@
                 this.ingredients.push(recipeIngredient);
             }
         }
-        // getNutritionalData() {
-
-        // }
+        
         delete(ingredient) {
             let index = this.ingredients.indexOf(ingredient); // find index of ingredient
             this.ingredients.splice(index, 1);  // remove ingredient from array
@@ -112,9 +110,9 @@
 
             // Handle search request when value are spaces
             if (/^\s*$/.test(regex)) {
-                (e.target === pantrySearch) ? displayPantry() : displayRecipes(); 
+                (e.target === pantrySearch) ? display('pantry') : display('recipes'); 
             } else {
-                (e.target === pantrySearch) ? displayPantry(regex) : displayRecipes(regex); 
+                (e.target === pantrySearch) ? display('pantry', regex) : display('recipes', regex); 
             }
         }, 0);
     }
@@ -152,7 +150,7 @@
             resetInputsExceptFor('recipe-item', 'recipe-item-unit');
         }
 
-        displayPantry();
+        display('pantry');
     }
 
     // Remove ingredient from temp recipe on 'delete' click
@@ -166,7 +164,7 @@
             }
         }
     
-        displayInputRecipe();
+        display('tempRecipe');
     }
 
     // Delete a recipe from Recipe list section.
@@ -186,7 +184,7 @@
             request.parentElement.remove();
             // Remove recipe from recipes array
             recipes.splice(recipes.findIndex(recipe => recipe.name === request.id), 1);
-            displayRecipes();
+            display('recipes');
         }
     
         // Display or remove recipe ingredients when view or hide button is clicked
@@ -245,7 +243,7 @@
             // Add recipe to tempRecipe object using prototype method
             tempRecipe.add(recipeItem.value, recipeItemQty.value, recipeItemUnit.value)
     
-            displayInputRecipe();
+            display('tempRecipe');
             resetInputsExceptFor('recipe-name');
         }
     }
@@ -276,7 +274,7 @@
             
             ingredientsList.innerHTML = "";
             resetInputsExceptFor();
-            displayRecipes();
+            display('recipes');
         }
     }
 
@@ -322,18 +320,22 @@
             localStorage.setItem('recipeData', recipeData);
         }
             resetInputsExceptFor();
-            displayPantry();
-            displayRecipes();
+            display('pantry');
+            display('recipes');
     }
 
     // **************FUNCTIONS*************
+
     function addToPantry(item, qty, unitOfMeasure) {
     
         if (pantry.some(ingredient => ingredient.name.includes(item))) {
             // Lookup object name in pantry array
             for (let ingredient of pantry) {
                 if (ingredient.name === item) {
+
+                    // Use prototype method to update quantity
                     ingredient.updateQty(qty);
+
                     // Prompt user to confirm unit of measurement if already exists in database.
                     if (ingredient.unit !== unitOfMeasure) {
                         let response = confirm(`The unit of measurement for "${ingredient.name}" already exists in the database. Do you want to update this from "${ingredient.unit}" to "${unitOfMeasure}"`);
@@ -347,12 +349,10 @@
         } else {
             pantry.push(new Ingredient(item, qty, unitOfMeasure))       
         }
-        displayPantry();
+        display('pantry');
     }
-// *****************************************************************WORKING_HERE******************************************
-    function displayPantry(search=0) {
-        pantryList.innerHTML = "";
 
+    function display(request, search=0) {
         let regex;
         if (search.length < 2) {
             regex = new RegExp(`^${search}`, 'gi');
@@ -360,99 +360,61 @@
             regex = new RegExp(`${search}`, 'gi');
         }
 
-        for (let ingredient of pantry) {
-            if (ingredient.qty) {
-                if (search) {
-                    if (regex.test(ingredient.name)) {
+        if (request === 'pantry') {
+            pantryList.innerHTML = "";
+
+            for (let ingredient of pantry) {
+                if (ingredient.qty) {
+                    if (search.length > 0) {
+                        if (regex.test(ingredient.name)) {
+                            let newListItem = document.createElement('li');
+                            newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
+                            pantryList.appendChild(newListItem);
+                        }
+                    } else {
                         let newListItem = document.createElement('li');
                         newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
                         pantryList.appendChild(newListItem);
                     }
-                } else {
-                    let newListItem = document.createElement('li');
-                    newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n<a class="button add-to-recipe">Add to recipe</a>\n`;
-                    pantryList.appendChild(newListItem);
                 }
             }
         }
-    }
 
-    function displayInputRecipe() {
-        ingredientsList.innerHTML = "";
+        if (request === 'recipes') {
+            recipeList.innerHTML = "";
 
-        for (let ingredient of tempRecipe.ingredients) {
-            if (ingredient.qty){
-                let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n`;
-                ingredientsList.appendChild(newListItem);
-            }
-        }
-    }
-
-    function displayRecipes(search=0) {
-        recipeList.innerHTML = "";
-
-        
-        let regex;
-        if (search.length < 2) {
-            regex = new RegExp(`^${search}`, 'gi');
-        } else {
-            regex = new RegExp(`${search}`, 'gi');
-        }
-
-
-        for (let recipe of recipes) {
-            if (search.length > 0) {
-                if (regex.test(recipe.name)) {
+            for (let recipe of recipes) {
+                if (search.length > 0) {
+                    if (regex.test(recipe.name)) {
+                        let newListItem = document.createElement('li');
+                        newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
+                        recipeList.appendChild(newListItem);
+                    }
+                } else {
                     let newListItem = document.createElement('li');
                     newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
                     recipeList.appendChild(newListItem);
                 }
-            } else {
-                let newListItem = document.createElement('li');
-                newListItem.innerHTML = `\n<span>• ${recipe.name} </span>\n<a class="button view-nutrition">Data</a>\n<a id="${recipe.name}" class="button delete">Delete</a>\n<a class="button view-recipe">View</a>\n`;
-                recipeList.appendChild(newListItem);
+            }
+        }
+
+        if (request === 'tempRecipe') {
+            ingredientsList.innerHTML = "";
+
+            for (let ingredient of tempRecipe.ingredients) {
+                if (ingredient.qty){
+                    let newListItem = document.createElement('li');
+                    newListItem.innerHTML = `\n<span>• ${ingredient.name} ${ingredient.qty} ${ingredient.unit} </span>\n<a id="${ingredient.name}" class="button delete">Delete</a>\n`;
+                    ingredientsList.appendChild(newListItem);
+                }
             }
         }
     }
-
-    
-
-    function resetInputsExceptFor(...exceptions) {
-        const inputs = Array.from(allInputs);
-        const selects = Array.from(allSelects);
-        
-        inputs.forEach(input => {
-            if (! exceptions.includes(input.id)) input.value = "";
-        });
-
-        selects.forEach(select => {
-            if (! exceptions.includes(select.id)) select.value = "";
-        });
-    }
-
-    // Form field validation function
-    function isInputInvalid(el, input, expression) {
-        // Regex array - 0 for min length 3 test, 1 for number test.
-        const regex = [/.{3,}/gi, /^[+-]?\d*\.?\d+$/gi, /./gi ];
-
-        if (regex[expression].test(input)) {
-            el.classList.remove('invalid');
-            el.setCustomValidity('');
-            
-        } else {
-            el.classList.add('invalid');
-            el.setCustomValidity(`${REGEX_EXP['errorMsg'][expression]}`);
-        }
-        document.getElementById('forms').reportValidity();
-    }
-
 
     function getIngredientData(recipe) {
         const BASE_URL = 'https://api.edamam.com/api/nutrition-data?';
                 
         let recipeLookup = recipes.find(element => element.name === recipe);
-        
         
         for (let ingredient of recipeLookup.ingredients) {
             
@@ -470,8 +432,6 @@
 
                     let textWithNoSpaces = ingredient.name.replace(" ", "")
                     let newListItem = document.createElement('li');
-
-                    // newListItem.style.opacity = 0;
                     
                     newListItem.classList.add(textWithNoSpaces);
 
@@ -481,19 +441,11 @@
                     ${ingredient.nutrition.totalNutrients.SUGAR.label}: ${ingredient.nutrition.totalNutrients.SUGAR.quantity.toFixed(2)} ${ingredient.nutrition.totalNutrients.SUGAR.unit} <br> <br>`;
 
                     document.getElementById('nutrition-data').appendChild(newListItem);
-
-                    // let animateDisplay = setInterval(function() {
-                    //     // if (newListItem.style.opacity < 1) 
-                    //     newListItem.style.opacity += parseFloat(0.1);
-                    //     // else clearInterval(animateDisplay);
-                    // }, 5000);
-
                 });
+
             } else {
                 let textWithNoSpaces = ingredient.name.replace(" ", "")
                 let newListItem = document.createElement('li');
-
-                // newListItem.style.opacity = 0;
                     
                 newListItem.classList.add(textWithNoSpaces);
 
@@ -504,16 +456,36 @@
 
                 document.getElementById('nutrition-data').appendChild(newListItem);
 
-                // let animateDisplay = setInterval(() => {
-                //     // if (newListItem.style.opacity < 1) 
-                //     newListItem.style.opacity += 0.1;
-                //     // else clearInterval(animateDisplay);
-                // }, 500);
-
             }
         }
-
     }
 
+    // Form field validation function
+    function isInputInvalid(el, input, expression) {
+        // Regex array - 0 for min length 3 test, 1 for number test.
+        const regex = [/.{3,}/gi, /^[+-]?\d*\.?\d+$/gi, /./gi ];
+
+        if (regex[expression].test(input)) {
+            el.classList.remove('invalid');
+            el.setCustomValidity('');
+        } else {
+            el.classList.add('invalid');
+            el.setCustomValidity(`${REGEX_EXP['errorMsg'][expression]}`);
+        }
+        document.getElementById('forms').reportValidity();
+    }
+
+    function resetInputsExceptFor(...exceptions) {
+        const inputs = Array.from(allInputs);
+        const selects = Array.from(allSelects);
+        
+        inputs.forEach(input => {
+            if (! exceptions.includes(input.id)) input.value = "";
+        });
+
+        selects.forEach(select => {
+            if (! exceptions.includes(select.id)) select.value = "";
+        });
+    }
 
 // });
