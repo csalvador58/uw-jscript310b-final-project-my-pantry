@@ -8,8 +8,6 @@
         ],                 
     };
 
-    // const searchElements = document.querySelectorAll('[id*="search"]');
-
 
     const allInputs = document.getElementsByTagName('input');
     const allSelects = document.getElementsByTagName('select');
@@ -108,10 +106,10 @@
         setTimeout(function() {
             const regex = eventTarget.value;
 
-            // Handle search request when value are spaces
+            // Process search request when initial characters are spaces
             if (/^\s*$/.test(regex)) {
                 (e.target === pantrySearch) ? display('pantry') : display('recipes'); 
-            } else {
+            } else {  // Process when search is valid
                 (e.target === pantrySearch) ? display('pantry', regex) : display('recipes', regex); 
             }
         }, 0);
@@ -147,7 +145,7 @@
             const pantryLookup = pantry.find(item => item.name === e.target.previousElementSibling.id); 
             recipeItem.value = pantryLookup.name;
             recipeItemUnit.value = pantryLookup.unit;
-            resetInputsExceptFor('recipe-item', 'recipe-item-unit');
+            resetInputsExceptFor('recipe-name', 'recipe-item', 'recipe-item-unit');
         }
 
         display('pantry');
@@ -185,6 +183,8 @@
             // Remove recipe from recipes array
             recipes.splice(recipes.findIndex(recipe => recipe.name === request.id), 1);
             display('recipes');
+
+            clearNutritionData();
         }
     
         // Display or remove recipe ingredients when view or hide button is clicked
@@ -275,6 +275,8 @@
             ingredientsList.innerHTML = "";
             resetInputsExceptFor();
             display('recipes');
+
+            clearNutritionData();
         }
     }
 
@@ -319,9 +321,12 @@
             localStorage.setItem('pantryData', pantryData);
             localStorage.setItem('recipeData', recipeData);
         }
+
             resetInputsExceptFor();
             display('pantry');
             display('recipes');
+            
+            clearNutritionData();
     }
 
     // **************FUNCTIONS*************
@@ -350,6 +355,14 @@
             pantry.push(new Ingredient(item, qty, unitOfMeasure))       
         }
         display('pantry');
+    }
+
+    function clearNutritionData() {
+        // document.getElementById('nutrition-data').classList.remove('visible');
+
+        // setTimeout(() => {
+            document.getElementById('nutrition-data').innerHTML = "";
+        // }, 500);
     }
 
     function display(request, search=0) {
@@ -413,6 +426,7 @@
 
     function getIngredientData(recipe) {
         document.getElementById('nutrition-data').innerHTML = "";
+
         const BASE_URL = 'https://api.edamam.com/api/nutrition-data?';
                 
         let recipeLookup = recipes.find(element => element.name === recipe);

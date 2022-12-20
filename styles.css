@@ -103,7 +103,7 @@ ul {
 }
 
 .hide {
-    display:none;
+    display: none;
 }
 
 .input, .pantry, .recipe {
@@ -122,7 +122,6 @@ ul {
 
 .main-container {
     display: flex;
-    /* height: fit-content; */
 }
 
 .main.recipe-nutrition-data {
@@ -135,13 +134,12 @@ ul#nutrition-data {
     opacity: 0;
     height: 0;
     transition: all 0.5s ease-in-out;
-  }
+}
   
   
 
-  ul#nutrition-data.visible {
+ul#nutrition-data.visible {
     opacity: 1;
     height: auto;
-    /* transition: all 0.5s ease-in-out; */
-  }
+}
   
