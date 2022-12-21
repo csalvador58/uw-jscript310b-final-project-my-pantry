@@ -371,7 +371,7 @@
         if (search.length < 2) {
             regex = new RegExp(`^${search}`, 'gi');
         } else {
-            regex = new RegExp(`${search}`, 'gi');
+            regex = new RegExp(`^${search}|${search}`, 'gi');
         }
 
         if (request === 'pantry') {
