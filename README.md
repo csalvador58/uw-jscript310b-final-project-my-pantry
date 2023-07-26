@@ -26,12 +26,12 @@
 
 ## About The Project
 
+My Pantry tracks ingredients stored in your pantry by user entries. The user has the ability to add/remove ingredients, update the quantity, and change the unit of measurement. The user can also create recipes and fetch nutritional data.
 <br/>
 
 ![Mobile views of the Login, Pantry, Recipe, and Edit pages.](MyPantry_js.gif)
 <br/>
 
-My Pantry tracks ingredients stored in your pantry by user entries. The user has the ability to add/remove ingredients, update the quantity, and change the unit of measurement. The user can also create recipes and fetch nutritional data.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -68,5 +68,18 @@ Other Notes:
 
 - Nutritional Analysis API
   Source: https://www.edamam.com
+
+## Recap:
+
+This project was created as have a passion for cooking as I do for coding. The intended requirements for the project was strictly HTML, CSS, and JS. 
+
+Some highlights in this project:
+- Made use of JS classes for ingredients and recipes
+- Search feature for item and recipes
+- Integration with a Food nutritional API
+
+My thoughts for improvement include:
+- Improve UX/UI by design for mobile screen and on the go use
+- Have multi pages (i.e. Pantry Item input, Pantry list, Recipes, etc)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
