@@ -18,6 +18,9 @@
     <li>
       <a href="#ui-description">UI Description</a>
     </li>
+    <li>
+      <a href="#recap">Recap</a>
+    </li>
   </ol>
 </details>
 <br/>
@@ -47,7 +50,7 @@ My Pantry tracks ingredients stored in your pantry by user entries. The user has
 
 2. Run index.html
 
-## UI Description:
+## UI Description
 
 - Entering an ingredient:
   Complete form fields in the input section then click 'Add to Pantry' which runs validation checks before listing the ingredient in the Pantry section.
@@ -69,9 +72,9 @@ Other Notes:
 - Nutritional Analysis API
   Source: https://www.edamam.com
 
-## Recap:
+## Recap
 
-This project was created as have a passion for cooking as I do for coding. The intended requirements for the project was strictly HTML, CSS, and JS. 
+This project was created for a Javascript course at [University of Washington - PCE](https://www.pce.uw.edu/). The intended requirements for the project was strictly HTML, CSS, and JS. My plan for this project is to continue iterating on design as I continue through my Full-Stack program. I love to cook and at times found myself needing a better way to track my pantry. Continue to follow my GitHub to see future versions of the app.
 
 Some highlights in this project:
 - Made use of JS classes for ingredients and recipes
