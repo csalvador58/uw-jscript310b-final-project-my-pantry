@@ -74,7 +74,7 @@ Other Notes:
 
 ## Recap
 
-This project was created for a Javascript course at [University of Washington - PCE](https://www.pce.uw.edu/). The intended requirements for the project was strictly HTML, CSS, and JS. My plan for this project is to continue iterating on design as I continue through my Full-Stack program. I love to cook and at times found myself needing a better way to track my pantry. Continue to follow my GitHub to see future versions of the app.
+This project was created for a Javascript course at [University of Washington - PCE](https://www.pce.uw.edu/). The intended requirements for the project was strictly HTML, CSS, and JS. My plan for this project is to continue iterating on the design as I continue through my Full-Stack program. I love to cook and at times found myself needing a better way to track my pantry. Continue to follow my GitHub to see future versions of the app.
 
 Some highlights in this project:
 - Made use of JS classes for ingredients and recipes
