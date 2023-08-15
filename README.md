@@ -32,7 +32,7 @@
 My Pantry tracks ingredients stored in your pantry by user entries. The user has the ability to add/remove ingredients, update the quantity, and change the unit of measurement. The user can also create recipes and fetch nutritional data.
 <br/>
 
-![Mobile views of the Login, Pantry, Recipe, and Edit pages.](MyPantry_js.gif)
+![App demo with pantry item input, recipe building, and API fetch for nutritional data.](MyPantry_js.gif)
 <br/>
 
 
